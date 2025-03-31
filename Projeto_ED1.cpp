@@ -26,7 +26,7 @@ typedef struct disciplina {
 	*/
 	int id;
 	char nome[50];
-	int nota;
+	double nota;
 
 } _disciplina; 
 
@@ -199,10 +199,10 @@ int inserirDisciplina(L_lista *disciplinas, _disciplina nova_disciplina) {
 	
 	novo_node->disciplina = nova_disciplina;
 
-	//se a lista estiver vazia
-	//insere no inicio da lista
-	//se não estiver vazia, novo_node->prox aponta pro valor anteriormente no inicio da lista
-	//o inicio da lista se torna novo_node;
+	// se a lista estiver vazia
+	// insere no inicio da lista
+	// se não estiver vazia, novo_node->prox aponta pro valor anteriormente no inicio da lista
+	// o inicio da lista se torna novo_node;
 
 	if (*disciplinas == NULL) {
 		*disciplinas = novo_node;
@@ -214,6 +214,51 @@ int inserirDisciplina(L_lista *disciplinas, _disciplina nova_disciplina) {
 	
 	return 0;
 
+}
+
+int limparLista(L_lista *lista)
+{
+	_node *temp; // cria ponteiro temporario para um node
+
+	while (*lista != NULL){ // até chegar no final da lista
+	temp = *lista; //o ponteiro agora aponta para o primeiro da lista
+	*lista = temp->prox; // a cabeça da lista agora é o proximo node na lista
+	free(temp); // libera o node anterior
+	}
+	return 0;
+	
+}
+
+int exibirDisciplinasAluno(L_lista *lista)
+{
+	 // cria ponteiro temporario para um node
+	int id;
+	char *nome;
+	double nota;
+
+	_node *c = *lista; //c de current, vai para o primeiro node na lista
+	
+	printf("\nDISCIPLINAS: \n");
+	printf("\n--------------------------------------------------\n");
+
+	while (c != NULL){ // até chegar no final da lista
+		
+		//coleta os dados da disciplina
+		id = c->disciplina.id; 
+		nome = c->disciplina.nome;
+		nota = c->disciplina.nota;
+
+		//imprime os dados da disciplina
+		printf("id: %i\n", id);
+		printf("nome: %s\n", nome);
+		printf("nota: %.1f\n", nota);
+
+		//vai para o proximo node
+		c = c->prox;
+		printf("\n--------------------------------------------------\n");
+	}
+	return 0;
+	
 }
 /*
 _aluno novo_aluno()

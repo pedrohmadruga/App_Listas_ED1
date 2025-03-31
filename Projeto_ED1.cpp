@@ -10,6 +10,7 @@
 
 #define MAX 60
 
+// cpClear significa aqui "Cross Platform Clear", para que o programa funcione bem no Windows, MacOS e Linux.
 void cpClear() { 
 	#ifdef _WIN32
         system("cls");  
@@ -70,7 +71,6 @@ void mostrarMenu() {
 	printf("9. Sair\n");
 }
 
-// cpClear significa aqui "Cross Platform Clear", para que o programa funcione bem no Windows, MacOS e Linux.
 
 
 int main() {
@@ -174,15 +174,15 @@ S_lista criar() {
 
 _node * criarNode() {
 
-_node *n = (_node*) malloc(sizeof(_node));
+	_node *n = (_node*) malloc(sizeof(_node));
 
-if (n) {
-	n->prox = NULL;
-	return n;
-}
+	if (n) {
+		n->prox = NULL;
+		return n;
+	}
 
-printf("falha na alocação de memória\n");
-return NULL;
+	printf("falha na alocação de memória\n");
+	return NULL;
 
 }
 

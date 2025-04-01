@@ -10,15 +10,6 @@
 
 #define MAX 60
 
-// cpClear significa aqui "Cross Platform Clear", para que o programa funcione bem no Windows, MacOS e Linux.
-void cpClear() { 
-	#ifdef _WIN32
-        system("cls");  
-    #else
-        system("clear"); 
-    #endif
-}
-
 typedef struct disciplina { 
 	/*
 	coloquei disciplina como um struct pra talvez a gnt tentar criar um array de disciplinas prévio, mas isso não é necessário
@@ -54,24 +45,12 @@ typedef struct S_lista {
 
 } S_lista;
 
+// Protótipos de funções vão aqui
 S_lista criar();
 void continuar();
- //_disciplina disciplinas[40] = {43202, "Estruturas de Dados", 0}{3222, "Banco de dados", 0}{3, "POO", 0};
-
-
-void mostrarMenu() {
-	printf("1. Criar lista\n"); //remover criar lista
-	printf("2. Inserir novo aluno\n"); //->informa qual aluno->inserir disciplina na lista de dsicplinas do aluno
-	printf("3. Mostrar disciplinas\n"); 
-	printf("4. Mostrar alunos\n");
-	printf("5. Matricular aluno em disciplinas\n");//cadastra aluno, pede pra inserir disciplinas ate o usuario terminar
-	printf("6. Remover aluno\n");
-	printf("7. Remover disciplina\n");
-	printf("8. Créditos\n");
-	printf("9. Sair\n");
-}
-
-
+void mostrarDisciplinas();
+void mostrarMenu();
+void cpClear();
 
 int main() {
 	setlocale(LC_ALL, 0);
@@ -87,7 +66,7 @@ int main() {
 		
 		switch(opcao) {
 			case 1:
-				static int criado = 0; // Para inicializar vari�veis dentro do switch-case, é necessário ou criar um escopo ou usar variável estática. Preferi usar static.
+				static int criado = 0; // Para inicializar variáveis dentro do switch-case, é necessário ou criar um escopo ou usar variável estática. Preferi usar static.
 				if (!criado) { // Para não deixar criar a lista duas vezes
 						alunos = criar();
 						criado = 1;// lógica
@@ -106,20 +85,16 @@ int main() {
 					}
 				break;
 			case 3:
-				if (criado) { 
-						// lógica
-					}
-					else {
-						printf("\nErro: lista ainda não foi criada\n");
-					}
+					mostrarDisciplinas();
+					continuar();
 				break;
 			case 4:
 				if (criado) { 
-						// lógica
-					}
-					else {
-						printf("\nErro: lista ainda não foi criada\n");
-					}
+					// lógica
+				}
+				else {
+					printf("\nErro: lista ainda não foi criada\n");
+				}	
 				break;
 			case 5:
 				if (criado) { 
@@ -159,6 +134,27 @@ int main() {
 	
 	getchar();
 	return 0;
+}
+
+// cpClear significa aqui "Cross Platform Clear", para que o programa funcione bem no Windows, MacOS e Linux.
+void cpClear() { 
+	#ifdef _WIN32
+        system("cls");  
+    #else
+        system("clear"); 
+    #endif
+}
+
+void mostrarMenu() {
+	printf("1. Criar lista\n"); //remover criar lista
+	printf("2. Inserir novo aluno\n"); //->informa qual aluno->inserir disciplina na lista de dsicplinas do aluno
+	printf("3. Mostrar disciplinas\n"); 
+	printf("4. Mostrar alunos\n");
+	printf("5. Matricular aluno em disciplinas\n");//cadastra aluno, pede pra inserir disciplinas ate o usuario terminar
+	printf("6. Remover aluno\n");
+	printf("7. Remover disciplina\n");
+	printf("8. Créditos\n");
+	printf("9. Sair\n");
 }
 
 S_lista criar() {
@@ -266,6 +262,22 @@ int exibirDisciplinasAluno(L_lista *lista)
 	return 0;
 	
 }
+
+void mostrarDisciplinas() {
+	FILE *arquivo;
+	arquivo = fopen("disciplinas.txt", "r");
+
+	if (!arquivo) {
+		printf("\nFalha ao abrir o arquivo de disciplinas\n");
+	}
+
+	char c;
+	while ((c = fgetc(arquivo)) != EOF) {
+		putchar(c);
+	}
+	fclose(arquivo);
+}
+
 
 /*
 a função abaixo retorna o ponteiro para node encontrado, mas se isso é ideal vai depender de como vamos usar esse algoritmo de busca

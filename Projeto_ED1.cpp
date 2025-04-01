@@ -14,6 +14,8 @@ typedef struct disciplina {
 	/*
 	coloquei disciplina como um struct pra talvez a gnt tentar criar um array de disciplinas prévio, mas isso não é necessário
 	os dados podem ficar no node, o que acham?
+
+	-BM
 	*/
 	int id;
 	char nome[50];
@@ -147,10 +149,10 @@ void cpClear() {
 
 void mostrarMenu() {
 	printf("1. Criar lista\n"); //remover criar lista
-	printf("2. Inserir novo aluno\n"); //->informa qual aluno->inserir disciplina na lista de dsicplinas do aluno
+	printf("2. Inserir novo aluno\n"); //->cadastra aluno com dados, pede para inserir disciplinas na lista de disciplinas do aluno até o usuario terminal
 	printf("3. Mostrar disciplinas\n"); 
 	printf("4. Mostrar alunos\n");
-	printf("5. Matricular aluno em disciplinas\n");//cadastra aluno, pede pra inserir disciplinas ate o usuario terminar
+	printf("5. Matricular aluno em disciplinas\n");//pede o RGM do aluno -> pede os dados da disciplina -> insere a disciplina
 	printf("6. Remover aluno\n");
 	printf("7. Remover disciplina\n");
 	printf("8. Créditos\n");
@@ -177,12 +179,38 @@ _node * criarNode() {
 		return n;
 	}
 
-	printf("falha na alocação de memória\n");
+	printf("\nfalha na alocação de memória\n");
 	return NULL;
 
 }
 
-//função buscar disciplina
+/*
+Essa função coleta os dados para criar uma disciplina que será passada como argumento na função inserir disciplina.
+
+Idealmente eu quero que no momento que o usuário insira o nome da disciplina a função busque a disciplina na lista
+de disciplinas.txt que pedro criou e preencha o campo de ID dessa forma, mas isso fica pro futuro, mas por enquanto ela
+está coletando os dados manualmente pra podermos testar etc.
+
+-BM
+*/
+_disciplina coletarDisciplina()
+{
+	
+	_disciplina nova_disciplina;
+
+	scanf("Informe o nome da disciplina: ");
+	scanf("%49[^\n]", nova_disciplina.nome);
+
+	printf("Informe o ID da disciplina: ");
+	scanf("%d", &nova_disciplina.id);
+	getchar();
+
+	printf("Informe a nota do aluno para a disciplina: ");
+	scanf("%f", &nova_disciplina.nota);
+	
+	return nova_disciplina;
+
+}
 
 int inserirDisciplina(L_lista *disciplinas, _disciplina nova_disciplina) {
 	
@@ -280,10 +308,17 @@ void mostrarDisciplinas() {
 
 
 /*
-a função abaixo retorna o ponteiro para node encontrado, mas se isso é ideal vai depender de como vamos usar esse algoritmo de busca
-se por exemplo fomos implementar a opção de deletar um node da lista, precisariamos de uma função para relinkar os ponteiros pra não
-deixar o restante da lista orfã, mas se fomos usar essa busca apenas pra certificar que a disciplina inserida pelo usuario não está 
-na lista antes de inserir, podemos retornar só um int mesmo que é mais simples
+obs: se futuramente no projeto fomos implementar a opção de deletar um node da lista, 
+precisariamos de uma função para relinkar os ponteiros pra não deixar o restante da lista orfã.
+
+essa função retorna um ponteiro para um node, podendo ser usada para acessar o node diretamente dessa forma.
+
+N.B.: Para verificar redundância na lista e evitar inserção de disciplinas duplicadas por exemplo,
+a função pode ser simplesmente chamada dessa forma: if (buscarDisciplinaAluno(&lista, id) != NULL)
+
+TODO: futuramente inserir isso na logica de inserir nova disciplina para aluno
+
+-BM
 */
 
 _node *buscarDisciplinaAluno(L_lista *lista, int id)
@@ -327,6 +362,8 @@ _aluno novo_aluno()
 
 		mas acho q faz mais sentido colocar td relacionado a inserir o aluno nessa função, com uma função separada pra descobrir o indice
 		pra inserir ordenadamente o aluno na lista
+
+		-BM
 
 	
 }

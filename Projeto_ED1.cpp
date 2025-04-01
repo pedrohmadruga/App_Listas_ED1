@@ -225,7 +225,7 @@ int limparLista(L_lista *lista)
 		temp = *lista; //o ponteiro agora aponta para o primeiro da lista
 		*lista = temp->prox; // a cabeça da lista agora é o proximo node na lista
 		free(temp); // libera o node anterior
-		
+
 	}
 	return 0;
 	
@@ -233,22 +233,26 @@ int limparLista(L_lista *lista)
 
 int exibirDisciplinasAluno(L_lista *lista)
 {
+
+	if (*lista == NULL) {
+		return -1;
+	}
 	 // cria ponteiro temporario para um node
 	int id;
 	char *nome;
 	double nota;
 
-	_node *c = *lista; //c de current, vai para o primeiro node na lista
+	_node *p = *lista; //aponta para o primeiro node na lista
 	
 	printf("\nDISCIPLINAS: \n");
 	printf("\n--------------------------------------------------\n");
 
-	while (c != NULL){ // até chegar no final da lista
+	while (p != NULL){ // contanto que o node atual exista, ou seja, até chegar ao final da lista
 		
 		//coleta os dados da disciplina
-		id = c->disciplina.id; 
-		nome = c->disciplina.nome;
-		nota = c->disciplina.nota;
+		id = p->disciplina.id; 
+		nome = p->disciplina.nome;
+		nota = p->disciplina.nota;
 
 		//imprime os dados da disciplina
 		printf("id: %i\n", id);
@@ -256,12 +260,44 @@ int exibirDisciplinasAluno(L_lista *lista)
 		printf("nota: %.1f\n", nota);
 
 		//vai para o proximo node
-		c = c->prox;
+		p = p->prox;
 		printf("\n--------------------------------------------------\n");
 	}
 	return 0;
 	
 }
+
+/*
+a função abaixo retorna o ponteiro para node encontrado, mas se isso é ideal vai depender de como vamos usar esse algoritmo de busca
+se por exemplo fomos implementar a opção de deletar um node da lista, precisariamos de uma função para relinkar os ponteiros pra não
+deixar o restante da lista orfã, mas se fomos usar essa busca apenas pra certificar que a disciplina inserida pelo usuario não está 
+na lista antes de inserir, podemos retornar só um int mesmo que é mais simples
+*/
+
+_node *buscarDisciplinaAluno(L_lista *lista, int id)
+{
+
+	if (*lista == NULL) {
+		return NULL;
+	}
+	_node *p = *lista; //aponta para o primeiro node na lista
+	
+
+	while (p != NULL){ // contanto que o node atual exista, ou seja, até chegar ao final da lista
+		
+		if (id == p->disciplina.id)
+		{
+			return p; //se a disciplina foi encontrada, retorna o ponteiro para a disciplina;
+		}
+
+		//vai para o proximo node
+		p = p->prox;
+
+	}
+	return NULL;
+	
+}
+
 /*
 _aluno novo_aluno()
 {

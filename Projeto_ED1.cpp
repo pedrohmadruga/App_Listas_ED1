@@ -49,7 +49,6 @@ typedef struct S_lista {
 S_lista criar();
 void continuar();
 void mostrarDisciplinas();
-void mostrarAlunos();
 void mostrarMenu();
 void cpClear();
 
@@ -67,7 +66,7 @@ int main() {
 		
 		switch(opcao) {
 			case 1:
-				static int criado = 0; // Para inicializar vari�veis dentro do switch-case, é necessário ou criar um escopo ou usar variável estática. Preferi usar static.
+				static int criado = 0; // Para inicializar variáveis dentro do switch-case, é necessário ou criar um escopo ou usar variável estática. Preferi usar static.
 				if (!criado) { // Para não deixar criar a lista duas vezes
 						alunos = criar();
 						criado = 1;// lógica
@@ -90,8 +89,12 @@ int main() {
 					continuar();
 				break;
 			case 4:
-					mostrarAlunos();
-					continuar();
+				if (criado) { 
+					// lógica
+				}
+				else {
+					printf("\nErro: lista ainda não foi criada\n");
+				}	
 				break;
 			case 5:
 				if (criado) { 
@@ -262,21 +265,6 @@ void mostrarDisciplinas() {
 
 	if (!arquivo) {
 		printf("\nFalha ao abrir o arquivo de disciplinas\n");
-	}
-
-	char c;
-	while ((c = fgetc(arquivo)) != EOF) {
-		putchar(c);
-	}
-	fclose(arquivo);
-}
-
-void mostrarAlunos() {
-	FILE *arquivo;
-	arquivo = fopen("alunos.txt", "r");
-
-	if (!arquivo) {
-		printf("\nFalha ao abrir o arquivo de alunos\n");
 	}
 
 	char c;

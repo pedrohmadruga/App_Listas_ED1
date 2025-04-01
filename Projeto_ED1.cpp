@@ -221,9 +221,11 @@ int limparLista(L_lista *lista)
 	_node *temp; // cria ponteiro temporario para um node
 
 	while (*lista != NULL){ // até chegar no final da lista
-	temp = *lista; //o ponteiro agora aponta para o primeiro da lista
-	*lista = temp->prox; // a cabeça da lista agora é o proximo node na lista
-	free(temp); // libera o node anterior
+
+		temp = *lista; //o ponteiro agora aponta para o primeiro da lista
+		*lista = temp->prox; // a cabeça da lista agora é o proximo node na lista
+		free(temp); // libera o node anterior
+		
 	}
 	return 0;
 	

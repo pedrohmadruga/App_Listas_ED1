@@ -187,23 +187,26 @@ _node * criarNode() {
 /*
 Essa função coleta os dados para criar uma disciplina que será passada como argumento na função inserir disciplina.
 
-Idealmente eu quero que no momento que o usuário insira o nome da disciplina a função busque a disciplina na lista
-de disciplinas.txt que pedro criou e preencha o campo de ID dessa forma, mas isso fica pro futuro, mas por enquanto ela
-está coletando os dados manualmente pra podermos testar etc.
+N.B.: ESTA FUNÇÃO ESTÁ INCOMPLETA, ela vai funcionar por hora mas idealmente a função coletará o ID da disciplina
+e preencherá o nome a partir dele, também vai oferecer mostrar a lista de disciplinas através do disciplinas.txt que 
+pedro criou
 
 -BM
 */
 _disciplina coletarDisciplina()
 {
-	
+
 	_disciplina nova_disciplina;
 
-	scanf("Informe o nome da disciplina: ");
-	scanf("%49[^\n]", nova_disciplina.nome);
-
+	//TODO: um switch case no "Informe o ID da disciplina" também dando a opção de (apertar {caractere} para ver a lista de disciplinas)
+	
 	printf("Informe o ID da disciplina: ");
 	scanf("%d", &nova_disciplina.id);
 	getchar();
+
+	//placeholder
+	scanf("Informe o nome da disciplina: ");
+	scanf("%49[^\n]", nova_disciplina.nome);
 
 	printf("Informe a nota do aluno para a disciplina: ");
 	scanf("%f", &nova_disciplina.nota);
@@ -327,6 +330,7 @@ _node *buscarDisciplinaAluno(L_lista *lista, int id)
 	if (*lista == NULL) {
 		return NULL;
 	}
+
 	_node *p = *lista; //aponta para o primeiro node na lista
 	
 
@@ -341,6 +345,7 @@ _node *buscarDisciplinaAluno(L_lista *lista, int id)
 		p = p->prox;
 
 	}
+	
 	return NULL;
 	
 }

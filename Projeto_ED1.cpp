@@ -34,7 +34,7 @@ typedef _node* L_lista;
 
 typedef struct aluno {
 	
-	int RGM;
+	int rgm; // DEVE SER UMA STRING!!! IMPORTANTE!!
 	char nome[50];
 	L_lista *disciplinas; 
 
@@ -53,10 +53,14 @@ void continuar();
 void mostrarDisciplinas();
 void mostrarMenu();
 void cpClear();
+int inserirAluno(S_lista *lista, int rgm, char nome[]);
+void cadastrarAlunos(S_lista *lista);
+void mostrarAlunos(S_lista lista);
 
 int main() {
 	setlocale(LC_ALL, 0);
 	int opcao;
+	_aluno Aluno;
 	S_lista alunos;
 
 	do {
@@ -80,11 +84,12 @@ int main() {
 				break;
 			case 2:
 				if (criado) { // Todos os cases que envolvem manipular a lista tem essa lógica, para que só possa manipular a lista se ela já tiver sido criada.
-						// lógica
+						cadastrarAlunos(&alunos);							
 					}
 					else {
 						printf("\nErro: lista ainda não foi criada\n");
 					}
+				continuar();
 				break;
 			case 3:
 					mostrarDisciplinas();
@@ -92,11 +97,12 @@ int main() {
 				break;
 			case 4:
 				if (criado) { 
-					// lógica
+					mostrarAlunos(alunos);
 				}
 				else {
 					printf("\nErro: lista ainda não foi criada\n");
-				}	
+				}
+				continuar();	
 				break;
 			case 5:
 				if (criado) { 
@@ -145,6 +151,10 @@ void cpClear() {
     #else
         system("clear"); 
     #endif
+}
+
+int isVazia(S_lista *lista) {
+	return (lista->n == -1);
 }
 
 void mostrarMenu() {
@@ -197,8 +207,6 @@ _disciplina coletarDisciplina()
 {
 
 	_disciplina nova_disciplina;
-
-	//TODO: um switch case no "Informe o ID da disciplina" também dando a opção de (apertar {caractere} para ver a lista de disciplinas)
 	
 	printf("Informe o ID da disciplina: ");
 	scanf("%d", &nova_disciplina.id);
@@ -292,6 +300,80 @@ int exibirDisciplinasAluno(L_lista *lista)
 	}
 	return 0;
 	
+}
+
+int inserirAluno(S_lista *lista, int rgm, char nome[]) {
+    if (lista->n >= MAX - 1) {
+        printf("Lista de alunos cheia!\n");
+        return 0;
+    }
+
+    //verificaça se ja foi registrado um aluno com esse RGM
+    for (int i = 0; i <= lista->n; i++) {
+        if (lista->alunos[i].rgm == rgm) {
+            printf("Erro: RGM %d já cadastrado!\n", rgm);
+            return 0;
+        }
+    }
+    //verificação da posição correta para inserir o aluno mediante a ordem do seu RGM
+	
+    int pos = 0;
+	while (pos <= lista->n && lista->alunos[pos].rgm < rgm) {
+        pos++;
+    }
+
+    //desloca os alunos para a direita na lista abrindo espaço para outro
+    for (int i = lista->n+1; i > pos; i--) {
+        lista->alunos[i] = lista->alunos[i-1];
+    }
+    
+    lista->alunos[pos].rgm = rgm; //insere o aluno na posição correta
+    strcpy(lista->alunos[pos].nome, nome); //copia o nome digitado para a estrutura Aluno
+    lista->n++;// aumenta a quantidade de alunos cadastrados
+    return 1;
+}
+
+//função para cadastrar mais de um aluno por vez
+void cadastrarAlunos(S_lista *lista) {
+    int n;
+    printf("Quantos alunos deseja cadastrar? (Máx: %d): ", MAX);
+    scanf("%d", &n);
+    getchar();
+    //verifica se a quantidade de alunos a ser cadastrada é menor que o MAX
+    if (n <= 0 || n > MAX - (lista->n+1)) {
+        printf("Número inválido de alunos!\n");
+        return;
+    }
+    //coleta os dados dos alunos
+    for (int i = 0; i < n; i++) {
+        int rgm;
+        char nome[50];
+        printf("Digite o RGM do aluno %d: ", i + 1);
+        scanf("%d", &rgm);
+        getchar();
+        printf("Digite o nome do aluno: ");
+		scanf("%[^\n]s", nome);
+		fflush(stdin);
+		// ADICIONAR CADASTRO DE DISCIPLINAS! IMPORTANTE!!!!!!!!!!!!!!!!!
+		//TODO: um switch case no "Informe o ID da disciplina" também dando a opção de (apertar {caractere} para ver a lista de disciplinas)
+
+
+        if (!inserirAluno(lista, rgm, nome)) {
+            i--; //se inserir um mesmo RGM ocasionando erro, repete a tentativa
+        }
+    }
+}
+
+void mostrarAlunos(S_lista lista) {
+    if (lista.n == -1) {
+        printf("Nenhum aluno cadastrado.\n");
+        return;
+    }
+
+    printf("\nLista de Alunos:\n");
+    for (int i = 0; i <= lista.n; i++) {
+        printf("RGM: %d - Nome: %s\n", lista.alunos[i].rgm, lista.alunos[i].nome);
+    }
 }
 
 void mostrarDisciplinas() {

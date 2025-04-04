@@ -34,7 +34,7 @@ typedef _node* L_lista;
 
 typedef struct aluno {
 	
-	int rgm;
+	int rgm; // DEVE SER UMA STRING!!! IMPORTANTE!!
 	char nome[50];
 	L_lista *disciplinas; 
 
@@ -207,8 +207,6 @@ _disciplina coletarDisciplina()
 {
 
 	_disciplina nova_disciplina;
-
-	//TODO: um switch case no "Informe o ID da disciplina" também dando a opção de (apertar {caractere} para ver a lista de disciplinas)
 	
 	printf("Informe o ID da disciplina: ");
 	scanf("%d", &nova_disciplina.id);
@@ -356,6 +354,9 @@ void cadastrarAlunos(S_lista *lista) {
         printf("Digite o nome do aluno: ");
 		scanf("%[^\n]s", nome);
 		fflush(stdin);
+		// ADICIONAR CADASTRO DE DISCIPLINAS! IMPORTANTE!!!!!!!!!!!!!!!!!
+		//TODO: um switch case no "Informe o ID da disciplina" também dando a opção de (apertar {caractere} para ver a lista de disciplinas)
+
 
         if (!inserirAluno(lista, rgm, nome)) {
             i--; //se inserir um mesmo RGM ocasionando erro, repete a tentativa
